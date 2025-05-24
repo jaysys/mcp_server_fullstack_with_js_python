@@ -48,6 +48,9 @@ backend/
   - 예: "9단 알려줘" → MCP 서버, "대한민국 인구는?" → LLM
 - **lmstudio_client.py**
   - LM Studio API와 통신(로컬 LLM 답변)
+  - LM Studio는 PC에서 직접 실행하는 무료 LLM 서버로, OpenAI 호환 REST API를 제공합니다.
+  - 본 프로젝트는 LM Studio를 로컬에서 띄워(`http://localhost:1234/v1/chat/completions` 등) LLM 응답을 받도록 설계되어 있습니다.
+
 
 ### (4) 기타
 
@@ -158,6 +161,32 @@ uv run python -m app.client
 - `.gitignore`는 Python/Node.js/에디터/OS 임시파일을 모두 포함
 - LM Studio(Llama3 등) API 연동 예제는 `app/lmstudio_client.py` 참고
 - Node.js 버전은 `js_mcp_gugudan_server/README.md` 참고
+
+---
+
+## [부록] LLM(LM Studio) 구성 및 활용 안내
+
+### LM Studio란?
+- **LM Studio**는 PC에서 직접 실행할 수 있는 무료 LLM(대형언어모델) 서버입니다.
+- OpenAI API와 호환되는 REST API(`http://localhost:1234/v1/chat/completions` 등)를 제공합니다.
+- GPT-3, Llama3 등 다양한 모델을 다운로드하여 로컬에서 프라이빗하게 사용할 수 있습니다.
+
+### 본 프로젝트에서의 활용
+- `app/lmstudio_client.py`에서 LM Studio API로 질문을 보내고, LLM이 답변을 생성합니다.
+- 클라이언트(client.py)는 구구단 등 MCP 서버가 처리하지 못하는 질문을 자동으로 LM Studio로 라우팅합니다.
+- LM Studio는 반드시 PC에서 실행 중이어야 하며, 기본 포트는 1234입니다.
+
+### LM Studio 설정 예시
+1. [LM Studio 공식 사이트](https://lmstudio.ai/)에서 다운로드 및 설치
+2. LM Studio 실행 후, 원하는 모델(예: Llama3) 선택 및 다운로드
+3. "OpenAI Compatible API" 기능 활성화 (설정에서 토글)
+4. 서버가 켜지면 `http://localhost:1234/v1/chat/completions` 주소로 API 요청 가능
+
+### 예시 코드 (app/lmstudio_client.py)
+```python
+LMSTUDIO_API_URL = "http://localhost:1234/v1/chat/completions"
+# ... 이하 생략 ...
+```
 
 ---
 
